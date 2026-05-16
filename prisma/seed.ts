@@ -44,6 +44,10 @@ async function main() {
   });
 
   console.log("✅ Seed data created");
+  console.log("\nSeeded credentials (password: password123):");
+  console.log("  ADMIN    → admin@demo.com");
+  console.log("  MANAGER  → manager@demo.com");
+  console.log("  EMPLOYEE → employee@demo.com");
 }
 
 main()

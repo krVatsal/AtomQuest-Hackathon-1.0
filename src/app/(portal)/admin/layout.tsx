@@ -21,7 +21,7 @@ export default async function AdminLayout({
   if (session.user.role !== "ADMIN") redirect("/");
 
   return (
-    <div className="flex min-h-[calc(100vh-3.5rem)]">
+    <div className="flex min-h-full">
       <aside className="w-52 shrink-0 border-r bg-muted/30 px-3 py-6">
         <p className="mb-3 px-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
           Admin

@@ -183,7 +183,7 @@ export function ReportsClient({
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis dataKey="quarter" tick={{ fontSize: 13 }} />
               <YAxis domain={[0, 100]} tickFormatter={(v) => `${v}%`} tick={{ fontSize: 12 }} />
-              <Tooltip formatter={(v: number) => [`${v}%`, "Completion"]} />
+              <Tooltip formatter={(v) => [`${v}%`, "Completion"]} />
               <Bar dataKey="completion" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
