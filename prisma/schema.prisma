@@ -61,10 +61,11 @@ model GoalSheet {
   employee    User            @relation(fields: [employeeId], references: [id])
   cycleId     String
   cycle       GoalCycle       @relation(fields: [cycleId], references: [id])
-  status      GoalSheetStatus @default(DRAFT)
-  submittedAt DateTime?
-  approvedAt  DateTime?
-  goals       Goal[]
+  status       GoalSheetStatus @default(DRAFT)
+  submittedAt  DateTime?
+  approvedAt   DateTime?
+  returnReason String?
+  goals        Goal[]
 
   @@unique([employeeId, cycleId])
 }
