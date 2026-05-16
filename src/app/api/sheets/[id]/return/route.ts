@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { sendGoalReturned } from "@/lib/email";
+import { sendTeamsCard } from "@/lib/teams";
 
 export async function POST(
   req: Request,
@@ -64,6 +65,15 @@ export async function POST(
     { email: sheet.employee.email, name: sheet.employee.name },
     reason
   );
+
+  // Notify employee via Teams (fire-and-forget)
+  const appUrl = process.env.NEXTAUTH_URL ?? "";
+  sendTeamsCard({
+    title: "Goal Sheet Returned for Rework",
+    body: `Your manager has returned your goal sheet. Reason: ${reason}`,
+    deepLink: `${appUrl}/goals`,
+    deepLinkLabel: "View My Goals",
+  }).catch(() => {});
 
   return NextResponse.json(updated);
 }

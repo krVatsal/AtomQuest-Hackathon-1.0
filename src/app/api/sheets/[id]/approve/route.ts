@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { sendGoalApproved } from "@/lib/email";
+import { sendTeamsCard } from "@/lib/teams";
 
 export async function POST(
   _req: Request,
@@ -81,6 +82,15 @@ export async function POST(
 
   // Send email notification (fire-and-forget)
   sendGoalApproved({ email: sheet.employee.email, name: sheet.employee.name });
+
+  // Notify employee via Teams (fire-and-forget)
+  const appUrl = process.env.NEXTAUTH_URL ?? "";
+  sendTeamsCard({
+    title: "Goal Sheet Approved",
+    body: `Your goal sheet has been approved and locked. You can now track your quarterly achievements.`,
+    deepLink: `${appUrl}/goals`,
+    deepLinkLabel: "View My Goals",
+  }).catch(() => {});
 
   return NextResponse.json(updated);
 }

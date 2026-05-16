@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { sendTeamsCard } from "@/lib/teams";
 
 export async function POST(
   _req: Request,
@@ -15,7 +16,7 @@ export async function POST(
 
   const sheet = await prisma.goalSheet.findUnique({
     where: { id },
-    include: { goals: true },
+    include: { goals: true, employee: { include: { manager: true } } },
   });
 
   if (!sheet) {
@@ -62,6 +63,18 @@ export async function POST(
       submittedAt: new Date(),
     },
   });
+
+  // Notify manager via Teams (fire-and-forget)
+  const employee = sheet.employee as { name: string; manager: { email: string } | null } | undefined;
+  if (employee?.manager) {
+    const appUrl = process.env.NEXTAUTH_URL ?? "";
+    sendTeamsCard({
+      title: "New Goal Sheet Submitted",
+      body: `${employee.name} has submitted their goal sheet for your review.`,
+      deepLink: `${appUrl}/manager/approve/${id}`,
+      deepLinkLabel: "Review Sheet",
+    }).catch(() => {});
+  }
 
   return NextResponse.json(updated);
 }
