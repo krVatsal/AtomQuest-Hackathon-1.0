@@ -8,6 +8,7 @@ const adminNav = [
   { href: "/admin/users", label: "Users" },
   { href: "/admin/push-goal", label: "Push Shared Goal" },
   { href: "/admin/audit", label: "Audit Log" },
+  { href: "/admin/reports", label: "Reports" },
 ];
 
 export default async function AdminLayout({
