@@ -12,7 +12,7 @@ export default async function PortalLayout({
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-4">
+        <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-6">
           <span className="text-lg font-semibold tracking-tight">
             AtomQuest Portal
           </span>
@@ -37,7 +37,7 @@ export default async function PortalLayout({
           </div>
         </div>
       </header>
-      <main className="mx-auto max-w-5xl px-4 py-8">{children}</main>
+      <main className="mx-auto max-w-7xl px-6 py-8">{children}</main>
     </div>
   );
 }

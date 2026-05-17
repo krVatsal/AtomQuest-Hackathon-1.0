@@ -102,12 +102,14 @@ export async function GET() {
   const ws2 = XLSX.utils.json_to_sheet(completionRows);
   XLSX.utils.book_append_sheet(wb, ws2, "Completion Status");
 
-  const buffer: Buffer = XLSX.write(wb, { type: "buffer", bookType: "xlsx" });
+  const buffer = XLSX.write(wb, { type: "array", bookType: "xlsx" }) as Uint8Array<ArrayBuffer>;
 
-  return new Response(buffer, {
+  const blob = new Blob([buffer], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  });
+
+  return new Response(blob, {
     headers: {
-      "Content-Type":
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       "Content-Disposition": `attachment; filename="report-${cycle.year}.xlsx"`,
     },
   });
