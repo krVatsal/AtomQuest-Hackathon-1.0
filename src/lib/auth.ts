@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import MicrosoftEntraId from "next-auth/providers/microsoft-entra-id";
 import { compare } from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { authConfig } from "@/auth.config";
 
 import type { Role } from "@/generated/prisma";
 
@@ -85,10 +86,7 @@ async function syncAzureUser(
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  session: { strategy: "jwt" },
-  pages: {
-    signIn: "/login",
-  },
+  ...authConfig,
   providers: [
     Credentials({
       name: "Credentials",
@@ -166,11 +164,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return token;
     },
 
-    async session({ session, token }) {
-      session.user.id = token.id as string;
-      session.user.role = token.role as Role;
-      session.user.managerId = token.managerId as string | null;
-      return session;
-    },
   },
 });
