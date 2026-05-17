@@ -132,6 +132,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
+    ...authConfig.callbacks,
+
     async signIn({ account, profile }) {
       if (account?.provider === "microsoft-entra-id" && account.access_token) {
         const email = profile?.email ?? (profile as Record<string, string>)?.preferred_username;
